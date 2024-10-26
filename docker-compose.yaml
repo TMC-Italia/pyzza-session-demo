@@ -1,0 +1,19 @@
+services:
+  api:
+    build: ./api
+    container_name: fastapi_service
+    # expose on port 3000
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000  # Add this if FastAPI is configured to read the port from an environment variable
+    volumes:
+      - ./data:/data 
+
+  bot:
+    build: ./bot
+    container_name: telegram_bot
+    environment:
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+    depends_on:
+      - api
