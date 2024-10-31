@@ -1,4 +1,9 @@
-telegram
 fastapi
-seaborn
+uvicorn
+kafka-python
 fpdf
+pandas
+matplotlib
+seaborn
+openpyxl
+telegram
