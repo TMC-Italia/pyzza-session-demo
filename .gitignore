@@ -1,0 +1,89 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+.ENV/
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Pytest cache
+.pytest_cache/
+.cache
+
+# MyPy cache
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Logs and database files
+*.log
+*.sqlite3
+
+# Unit test / coverage reports
+htmlcov/
+coverage/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# pylint, mypy, coverage, and other tools
+.mypy_cache/
+.pylint.d/
+.pyre/
+
+# VS Code settings
+.vscode/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Docker files and settings
+docker-compose.override.yml
+**/Dockerfile
+**/docker-compose*.yml
+.dockerignore
+
+# Ignore the Docker-related files and folders if they are generated
+.docker/
+.docker/*
+*.log
+
+# Sensitive files
+.env
+.env.*
+
+# Editor files
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*.bak
+*.orig
+
+# macOS
+.DS_Store
