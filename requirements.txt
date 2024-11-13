@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-kafka-python
-fpdf
-pandas
-matplotlib
-seaborn
-openpyxl
-telegram
