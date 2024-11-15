@@ -44,9 +44,9 @@ services:
 #    networks:
 #      - app
 
-  gemma_song_generator:
-    build: ./services/gemma_song_generator
-    container_name: gemma_song_generator_service
+  song_generator:
+    build: ./services/song_generator
+    container_name: song_generator_service
     ports:
       - "8003:8003"
     volumes:
