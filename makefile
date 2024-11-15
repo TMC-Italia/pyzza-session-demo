@@ -11,6 +11,7 @@ compose-build:
 # Run the program, in auto reload mode
 compose-up:
 	docker compose up -d
+	docker exec -it ollama ollama run gemma2
 
 compose-down:
 	docker compose down --remove-orphans

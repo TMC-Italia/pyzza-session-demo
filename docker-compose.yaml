@@ -32,14 +32,32 @@ services:
       - app
 
 
-  song_generator:
-    build: ./services/song_generator
-    container_name: song_generator_service
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+#  song_generator:
+#    build: ./services/song_generator
+#    container_name: song_generator_service
+#    environment:
+#      - OPENAI_API_KEY=${OPENAI_API_KEY}
+#    ports:
+#      - "8003:8003"
+#    volumes:
+#      - ./data:/data
+#    networks:
+#      - app
+
+  gemma_song_generator:
+    build: ./services/gemma_song_generator
+    container_name: gemma_song_generator_service
     ports:
       - "8003:8003"
     volumes:
       - ./data:/data
+    networks:
+      - app
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - 11434:11434
     networks:
       - app
