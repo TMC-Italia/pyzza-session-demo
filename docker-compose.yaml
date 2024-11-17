@@ -1,9 +1,9 @@
-# Docker Compose configuration file for running the FastAPI service and the Telegram bot
 networks:
   app: # main network
 
 volumes:
   app_db:
+  ollama:
 
 services:
   api:
@@ -14,7 +14,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/api  
+      - .:/api 
     environment:
       - API_PORT=8000
     networks:
@@ -27,6 +27,8 @@ services:
     container_name: pdf_generator_service
     ports:
       - "8001:8001"
+    volumes:
+      - ./services/pdf_generator:/app  # Bind mount for hot reload
     networks:
       - app
 
@@ -36,39 +38,21 @@ services:
     ports:
       - "8002:8002"
     volumes:
-      - ./data:/data
+      - ./services/song_generator:/app  # Bind mount for hot reload
     networks:
       - app
 
-
   ollama:
-    image: ollama/ollama
-    expose:
-      - 11434/tcp
+    image: ollama/ollama:latest
+    container_name: ollama_service
     ports:
-      - 11434:11434/tcp
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    networks:
+      - app
     healthcheck:
-      test: ollama --version || exit 1
-
-
-#  ollama-webui:
-#    image: ghcr.io/open-webui/open-webui:main
-#    container_name: ollama-webui
-#    volumes:
-#      - ./ollama/ollama-webui:/app/backend/data
-#    depends_on:
-#      - ollama
-#    ports:
-#      - 8080:8080
-#    environment:
-#      - OLLAMA_BASE_URLS=http://localhost:11434
-#      - ENV=dev
-#      - WEBUI_AUTH=False
-#      - WEBUI_NAME=valiantlynx AI
-#      - WEBUI_URL=http://localhost:8080
-#      - WEBUI_SECRET_KEY=t0p-s3cr3t
-#    extra_hosts:
-#      - host.docker.internal:host-gateway
-#    restart: unless-stopped
-#    networks:
-#      - app
+      test: ["CMD", "ollama", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
