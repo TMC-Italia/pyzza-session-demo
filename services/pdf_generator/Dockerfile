@@ -2,12 +2,15 @@
 
 FROM python:3.9-slim
 
-WORKDIR /app
+# Copy the entire project to the container
+COPY . /pdf_generator
 
 # Copy the application code
-COPY main.py /app/main.py
-COPY service.py /app/service.py
-COPY requirements.txt /app/requirements.txt
+COPY main.py /pdf_generator/main.py
+COPY service.py /pdf_generator/service.py
+COPY requirements.txt /pdf_generator/requirements.txt
+
+WORKDIR /pdf_generator
 
 # Install dependencies
 RUN pip install -r requirements.txt

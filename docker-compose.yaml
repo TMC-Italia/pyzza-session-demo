@@ -1,7 +1,7 @@
 # Docker Compose configuration file for running the FastAPI service and the Telegram bot
 networks:
   app: # main network
-    # driver: host
+    driver: host
 
 volumes:
   app_db:
@@ -15,7 +15,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/app  # Mounts the current directory to /app in the container for hot reload
+      - .:/api  # Mounts the current directory to /app in the container for hot reload
     environment:
       - API_PORT=8000
     networks:
@@ -32,7 +32,7 @@ services:
       - app
 
 
-  song_generator:
+  song_generator_service:
     build: ./services/song_generator
     container_name: song_generator_service
     environment:

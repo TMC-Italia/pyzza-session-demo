@@ -3,22 +3,15 @@
 # Use the official FastAPI Docker image
 FROM python:3.10-slim-buster
 
-# Install necessary packages
-RUN apt-get update && apt-get install -y --no-install-recommends libpq-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set environment variables
-ENV PYTHONPATH=.
+# Copy the application code
+COPY main.py /api/main.py
+COPY requirements.txt /api/requirements.txt
 
 # Set the working directory in the container
-WORKDIR $PRJ
-
-# Copy the entire project to the container
-COPY . /api
+WORKDIR /api
 
 # Install dependencies
-RUN pip install requirements.txt
+RUN pip install -r requirements.txt
 
 # Expose the port
 EXPOSE 8000

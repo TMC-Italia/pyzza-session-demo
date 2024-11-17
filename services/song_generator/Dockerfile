@@ -2,12 +2,14 @@
 
 FROM python:3.9-slim
 
-WORKDIR /app
+# Set the working directory in the container
 
 # Copy the application code
-COPY main.py /app/main.py
-COPY service.py /app/service.py
-COPY requirements.txt /app/requirements.txt
+COPY main.py /song_generator/main.py
+COPY service.py /song_generator/service.py
+COPY requirements.txt /song_generator/requirements.txt
+
+WORKDIR /song_generator
 
 # Install dependencies
 RUN pip install -r requirements.txt
