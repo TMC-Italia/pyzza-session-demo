@@ -1,7 +1,6 @@
 # Docker Compose configuration file for running the FastAPI service and the Telegram bot
 networks:
   app: # main network
-    driver: host
 
 volumes:
   app_db:
@@ -15,7 +14,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/api  # Mounts the current directory to /app in the container for hot reload
+      - .:/api  
     environment:
       - API_PORT=8000
     networks:
@@ -31,32 +30,45 @@ services:
     networks:
       - app
 
-#  song_generator_openai_service:
-#    build: ./services/song_generator
-#    container_name: song_generator_service
-#    environment:
-#      - OPENAI_API_KEY=${OPENAI_API_KEY}
-#    ports:
-#      - "8003:8003"
-#    volumes:
-#      - ./data:/data
-#    networks:
-#      - app
-
   song_generator_service:
     build: ./services/song_generator
     container_name: song_generator_service
     ports:
-      - "8003:8003"
+      - "8002:8002"
     volumes:
       - ./data:/data
     networks:
       - app
 
+
   ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
+    image: ollama/ollama
+    expose:
+      - 11434/tcp
     ports:
-      - 11434:11434
-    networks:
-      - app
+      - 11434:11434/tcp
+    healthcheck:
+      test: ollama --version || exit 1
+
+
+#  ollama-webui:
+#    image: ghcr.io/open-webui/open-webui:main
+#    container_name: ollama-webui
+#    volumes:
+#      - ./ollama/ollama-webui:/app/backend/data
+#    depends_on:
+#      - ollama
+#    ports:
+#      - 8080:8080
+#    environment:
+#      - OLLAMA_BASE_URLS=http://localhost:11434
+#      - ENV=dev
+#      - WEBUI_AUTH=False
+#      - WEBUI_NAME=valiantlynx AI
+#      - WEBUI_URL=http://localhost:8080
+#      - WEBUI_SECRET_KEY=t0p-s3cr3t
+#    extra_hosts:
+#      - host.docker.internal:host-gateway
+#    restart: unless-stopped
+#    networks:
+#      - app

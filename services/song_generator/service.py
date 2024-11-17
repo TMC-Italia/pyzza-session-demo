@@ -1,4 +1,25 @@
+from requests import post
 import ollama
+
+
+from json import loads
+
+
+def generate_song_with_gemma(prompt: str) -> str:
+    response_text = ""
+    for chunk in post(
+        url="http://localhost:11434/api/generate",
+        json={
+            "model": "gemma2:2b",
+            "prompt": "What is the capital of France?"
+        }
+    ).text.splitlines():
+
+        response_text += loads(chunk)["response"]
+
+        print(response_text)
+
+    return response_text
 
 
 def perform_task(prompt: str):

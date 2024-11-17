@@ -15,7 +15,7 @@ WORKDIR /song_generator
 RUN pip install -r requirements.txt
 
 # Expose the service on a specific port
-EXPOSE 8003
+EXPOSE 8002
 
 # Run the FastAPI application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8003", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8002", "--reload"]

@@ -10,8 +10,8 @@ API_PATH = f"http://localhost:{API_PORT}"
 
 # Base URLs for other services, accessed by Docker Compose service names
 PDF_GENERATOR_URL = "http://pdf_generator_service:8001/generate-pdf"
-CHART_GENERATOR_URL = "http://chart_generator_service:8002/generate-chart"
-SONG_GENERATOR_URL = "http://song_generator_service:8003/generate-song"
+SONG_GENERATOR_URL = "http://song_generator_service:8002/generate-song"
+
 
 app = FastAPI(
     title="PyZza session API",
