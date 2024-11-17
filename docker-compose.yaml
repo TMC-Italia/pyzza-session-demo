@@ -61,14 +61,13 @@ services:
       retries: 5
 
   telegram_bot_service:
-    container_name: telegram_bot_service
     build:
       context: ./services/telegram_bot
       dockerfile: Dockerfile
+    container_name: telegram_bot_service
     depends_on:
       - api
     environment:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
-      API_BASE_URL: "http://api:3000"
     networks:
       - app
