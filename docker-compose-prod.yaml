@@ -11,10 +11,9 @@ services:
     container_name: api_service
     ports:
       - "8000:8000"
-    volumes:
-      - ./api:/api
     environment:
       - API_PORT=8000
+      - PYTHONPATH=/api
     networks:
       - app
     depends_on:
@@ -25,8 +24,6 @@ services:
     container_name: pdf_generator_service
     ports:
       - "8001:8001"
-    volumes:
-      - ./services/pdf_generator:/app
     networks:
       - app
 
@@ -35,8 +32,6 @@ services:
     container_name: song_generator_service
     ports:
       - "8003:8003"
-    volumes:
-      - ./services/song_generator:/app
     environment:
       - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
       - MAX_TOKENS=${MAX_TOKENS}
