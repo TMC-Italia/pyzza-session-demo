@@ -60,7 +60,7 @@ services:
       timeout: 10s
       retries: 5
 
-  telegram_bot:
+  telegram_bot_service:
     container_name: telegram_bot_service
     build:
       context: ./services/bot

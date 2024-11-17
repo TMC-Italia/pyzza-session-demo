@@ -28,9 +28,11 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/api_service:latest ./api
         docker build -t ${{ secrets.DOCKER_USERNAME }}/pdf_generator_service:latest ./services/pdf_generator
         docker build -t ${{ secrets.DOCKER_USERNAME }}/song_generator_service:latest ./services/song_generator
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/telegram_bot_service:latest ./services/telegram_bot
         docker push ${{ secrets.DOCKER_USERNAME }}/api_service:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/pdf_generator_service:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/song_generator_service:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/telegram_bot_service:latest
 
   deploy:
     runs-on: ubuntu-latest
