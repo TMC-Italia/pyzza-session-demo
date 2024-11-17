@@ -1,5 +1,5 @@
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes
 import requests
 import os
 
@@ -44,7 +44,7 @@ async def generate_song(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     model = context.args[0]
-    prompts = " ".join(context.args[1:])  # Combine all arguments after the model into a single string
+    prompts = " ".join(context.args[1:])
 
     if model not in ["gemma2", "openai"]:
         await update.message.reply_text("Invalid model. Use 'gemma2' or 'openai'.")
