@@ -1,0 +1,64 @@
+networks:
+  app: # main network
+
+volumes:
+  app_db:
+  ollama:
+
+services:
+  api:
+    image: kito129/api_service:latest
+    container_name: api_service
+    ports:
+      - "8000:8000"
+    environment:
+      - API_PORT=8000
+    networks:
+      - app
+    depends_on:
+      - pdf_generator_service
+
+  pdf_generator_service:
+    image: kito129/pdf_generator_service:latest
+    container_name: pdf_generator_service
+    ports:
+      - "8001:8001"
+    networks:
+      - app
+
+  song_generator_service:
+    image: kito129/song_generator_service:latest
+    container_name: song_generator_service
+    ports:
+      - "8003:8003"
+    environment:
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
+      - MAX_TOKENS=${MAX_TOKENS}
+    networks:
+      - app
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_service
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    networks:
+      - app
+    healthcheck:
+      test: ["CMD", "ollama", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  telegram_bot:
+    image: kito129/telegram_bot_service:latest
+    container_name: telegram_bot_service
+    depends_on:
+      - api
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      API_BASE_URL: "http://api:3000"
+    networks:
+      - app
