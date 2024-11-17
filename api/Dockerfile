@@ -18,7 +18,7 @@ WORKDIR $PRJ
 COPY . /api
 
 # Install dependencies
-RUN pip install fastapi uvicorn requests
+RUN pip install requirements.txt
 
 # Expose the port
 EXPOSE 8000
