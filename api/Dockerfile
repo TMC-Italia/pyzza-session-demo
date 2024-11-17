@@ -4,10 +4,10 @@
 FROM python:3.10-slim-buster
 
 # Copy the application code
-COPY . /api
+COPY . /app
 
 # Set the working directory in the container
-WORKDIR /api
+WORKDIR /app
 
 # Install dependencies
 RUN pip install -r requirements.txt
@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # Set entrypoint
-ENTRYPOINT ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

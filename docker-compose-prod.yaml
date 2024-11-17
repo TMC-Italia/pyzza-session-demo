@@ -31,7 +31,7 @@ services:
     image: kito129/song_generator_service:latest
     container_name: song_generator_service
     ports:
-      - "8003:8003"
+      - "8002:8002"
     environment:
       - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
       - MAX_TOKENS=${MAX_TOKENS}

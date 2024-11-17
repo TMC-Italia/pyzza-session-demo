@@ -14,7 +14,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/api 
+      - ./api:/app
     environment:
       - API_PORT=8000
     networks:
@@ -36,7 +36,7 @@ services:
     build: ./services/song_generator
     container_name: song_generator_service
     ports:
-      - "8003:8003"
+      - "8002:8002"
     volumes:
       - ./services/song_generator:/app
     environment:
