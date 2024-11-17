@@ -3,11 +3,12 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main  # Adjust to the branch for your production environment
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: prod
 
     steps:
     - name: Checkout code
@@ -48,10 +49,10 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
           # Navigate to deployment directory
-          cd /path/to/deployment
+          cd /app
 
           # Fetch the correct docker-compose.yml from the repo
-          curl -o docker-compose.yml https://raw.githubusercontent.com/<username>/<repository>/main/docker-compose.yml
+          curl -o docker-compose.yml https://raw.githubusercontent.com/TMC-Italia/pyzza-session-demo/master/docker-compose.yml
 
           # Pull updated Docker images
           docker-compose pull
