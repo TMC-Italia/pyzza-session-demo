@@ -59,3 +59,16 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
+  telegram_bot:
+    container_name: telegram_bot_service
+    build:
+      context: ./services/bot
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      API_BASE_URL: "http://api:3000"
+    networks:
+      - app

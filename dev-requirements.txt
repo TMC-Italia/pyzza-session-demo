@@ -6,3 +6,4 @@ fpdf
 pandas
 openai
 ollama
+python-telegram-bot
