@@ -6,7 +6,6 @@ FROM python:3.9-slim
 
 # Copy the application code
 COPY main.py /song_generator/main.py
-COPY service.py /song_generator/service.py
 COPY requirements.txt /song_generator/requirements.txt
 
 WORKDIR /song_generator
