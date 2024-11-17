@@ -61,20 +61,11 @@ coverage.xml
 .vscode/launch.json
 .vscode/tasks.json
 
-# Docker files and settings
-docker-compose.override.yml
-**/Dockerfile
-**/docker-compose*.yml
-.dockerignore
-
-# Ignore the Docker-related files and folders if they are generated
-.docker/
-.docker/*
-*.log
 
 # Sensitive files
 .env
 .env.*
+
 
 # Editor files
 .idea/

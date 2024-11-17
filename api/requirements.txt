@@ -2,6 +2,3 @@ fastapi
 uvicorn 
 requests
 
-fpdf
-pandas
-openai
