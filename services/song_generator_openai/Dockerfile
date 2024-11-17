@@ -1,0 +1,21 @@
+# Dockerfile
+
+FROM python:3.9-slim
+
+# Set the working directory in the container
+
+# Copy the application code
+COPY main.py /song_generator_openai/main.py
+COPY service.py /song_generator_openai/service.py
+COPY requirements.txt /song_generator_openai/requirements.txt
+
+WORKDIR /song_generator_openai
+
+# Install dependencies
+RUN pip install -r requirements.txt
+
+# Expose the service on a specific port
+EXPOSE 8003
+
+# Run the FastAPI application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8003", "--reload"]

@@ -28,7 +28,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - ./services/pdf_generator:/app  # Bind mount for hot reload
+      - ./services/pdf_generator:/app
     networks:
       - app
 
@@ -38,7 +38,19 @@ services:
     ports:
       - "8002:8002"
     volumes:
-      - ./services/song_generator:/app  # Bind mount for hot reload
+      - ./services/song_generator:/app
+    networks:
+      - app
+
+  song_generator_openai_service:
+    build: ./services/song_generator_openai
+    container_name: song_generator_openai_service
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./services/song_generator_openai:/app
+    environment:
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
     networks:
       - app
 
