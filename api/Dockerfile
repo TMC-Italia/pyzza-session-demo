@@ -5,8 +5,6 @@ FROM python:3.10-slim-buster
 
 # Copy the application code
 COPY . /app
-
-# Set the working directory in the container
 WORKDIR /app
 
 # Install dependencies

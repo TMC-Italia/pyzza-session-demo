@@ -2,8 +2,6 @@
 
 FROM python:3.9-slim
 
-# Set the working directory in the container
-
 # Copy the application code
 COPY . /song_generator
 WORKDIR /song_generator

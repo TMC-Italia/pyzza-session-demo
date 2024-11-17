@@ -89,6 +89,8 @@ async def generate_song(request: SongRequest):
         else:
             raise HTTPException(status_code=400, detail="Invalid model specified.")
 
+        result = result.replace("\n", " ")
+
         return {"status": "success", "song": result}
 
     except Exception as e:

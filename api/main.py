@@ -49,10 +49,10 @@ async def trick_or_treat():
     return choice(responses["treats"] + responses["tricks"])
 
 
-@app.post("/bc_data/generate_pdf/")
+@app.get("/bc_data/generate_pdf/")
 async def generate_pdf():
     try:
-        response = requests.post(PDF_GENERATOR_URL)
+        response = requests.get(PDF_GENERATOR_URL + "/generate_pdf")
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
