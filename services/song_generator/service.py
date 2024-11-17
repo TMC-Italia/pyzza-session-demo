@@ -9,8 +9,8 @@ def pull_model():
     )
 
     if response.status_code == 200:
-        print("Model pulled successfully.")
-        return True
+        msg = "Model Gemma2:2b pulled successfully"
+        return msg
     else:
         print(f"Failed to pull model: {response.status_code} - {response.text}")
         return False
