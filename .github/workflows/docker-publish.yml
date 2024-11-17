@@ -55,8 +55,8 @@ jobs:
           curl -o docker-compose.yml https://raw.githubusercontent.com/TMC-Italia/pyzza-session-demo/master/docker-compose-prod.yml
 
           # Pull updated Docker images
-          docker-compose pull
+          docker compose pull
 
           # Restart services
-          docker-compose down
-          docker-compose up -d
+          docker compose down
+          docker compose up -d
