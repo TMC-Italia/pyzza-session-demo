@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main  # Adjust to the branch you want to deploy
+      - master  # Adjust to the branch you want to deploy
 
 jobs:
   build:
