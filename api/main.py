@@ -59,7 +59,7 @@ async def generate_pdf():
         raise HTTPException(status_code=500, detail=f"Error generating PDF: {e}")
 
 
-@app.post("/song-generator/generate_song/")
+@app.post("/song_generator/generate_song/")
 async def generate_song(song_request: SongRequest):
     try:
         to_json = song_request.model_dump()
@@ -70,7 +70,7 @@ async def generate_song(song_request: SongRequest):
         raise HTTPException(status_code=500, detail=f"Error generating song: {e}")
 
 
-@app.get("/song-generator/pull_model/")
+@app.get("/song_generator/pull_model/")
 async def pull_model():
     try:
         response = requests.get(SONG_GENERATOR_URL + "/pull_model")

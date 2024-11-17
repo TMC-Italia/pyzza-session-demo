@@ -52,7 +52,7 @@ async def generate_song(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     payload = {"prompt": prompts, "model": model}
     try:
-        response = requests.post(f"{API_BASE_URL}/song-generator/generate_song/", json=payload)
+        response = requests.post(f"{API_BASE_URL}/song_generator/generate_song/", json=payload)
         response.raise_for_status()
         result = response.json()
         await update.message.reply_text(f"Song Generated: {result}")
@@ -63,7 +63,7 @@ async def generate_song(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def pull_model(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Call the pull_model API."""
     try:
-        response = requests.get(f"{API_BASE_URL}/song-generator/pull_model/")
+        response = requests.get(f"{API_BASE_URL}/song_generator/pull_model/")
         response.raise_for_status()
         result = response.json()
         await update.message.reply_text(f"Model pulled: {result}")
