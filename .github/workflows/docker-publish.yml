@@ -52,7 +52,7 @@ jobs:
           cd /app
 
           # Fetch the correct docker-compose.yml from the repo
-          curl -o docker-compose.yml https://raw.githubusercontent.com/TMC-Italia/pyzza-session-demo/master/docker-compose-prod.yml
+          curl -o docker-compose.yml https://raw.githubusercontent.com/TMC-Italia/pyzza-session-demo/refs/heads/master/docker-compose-prod.yaml
 
           # Pull updated Docker images
           docker compose pull
