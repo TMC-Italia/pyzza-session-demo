@@ -64,7 +64,6 @@ coverage.xml
 
 # Sensitive files
 .env
-.env.*
 
 
 # Editor files

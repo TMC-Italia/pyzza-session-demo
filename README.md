@@ -7,7 +7,7 @@ Pizza session 18 Nov - Python demo
 
 ## Installation
 
-Python environment setup:
+### Python environment setup:
 
 ```bash
 python3 -m venv .venv
@@ -20,7 +20,15 @@ To check that virtual environment is activated:
 which python
 ```
 
-Install the dependencies:
+Copy and set your own environment variables:
+
+```bash
+cp .env.sample .env
+```
+
+Change the values in the `.env` file.
+
+### Install the dependencies:
 
 ```bash
 make install

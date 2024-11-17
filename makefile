@@ -3,7 +3,7 @@
 # Install the required packages
 install:
 	@echo "Installing requirements..."
-	pip install -r requirements.txt
+	pip install -r dev-requirements.txt
 
 compose-build:
 	docker compose build
