@@ -9,8 +9,8 @@ API_PORT = os.getenv("API_PORT", 3000)
 API_PATH = f"http://localhost:{API_PORT}"
 
 # Base URLs for other services, accessed by Docker Compose service names
-PDF_GENERATOR_URL = "http://pdf_generator_service:8001/generate-pdf"
-SONG_GENERATOR_URL = "http://song_generator_service:8002/generate-song"
+PDF_GENERATOR_URL = "http://pdf_generator_service:8001/api"
+SONG_GENERATOR_URL = "http://song_generator_service:8002/api"
 
 
 app = FastAPI(
@@ -56,7 +56,17 @@ async def generate_pdf():
 async def generate_song(prompt: str):
     try:
         # Send a prompt for song generation
-        response = requests.post(SONG_GENERATOR_URL, json={"prompt": prompt})
+        response = requests.post(SONG_GENERATOR_URL + "/generate_song", json={"prompt": prompt})
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"Error generating song: {e}")
+
+
+@app.get("/pull_model/")
+async def pull_model():
+    try:
+        response = requests.get(SONG_GENERATOR_URL + "/pull_model")
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:

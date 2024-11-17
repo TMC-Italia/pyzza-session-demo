@@ -1,47 +1,37 @@
-from requests import post
-import ollama
+import requests
+import json
 
 
-from json import loads
-
-
-def generate_song_with_gemma(prompt: str) -> str:
-    response_text = ""
-    for chunk in post(
-        url="http://localhost:11434/api/generate",
-        json={
-            "model": "gemma2:2b",
-            "prompt": "What is the capital of France?"
-        }
-    ).text.splitlines():
-
-        response_text += loads(chunk)["response"]
-
-        print(response_text)
-
-    return response_text
-
-
-def perform_task(prompt: str):
-    # Use OpenAI's API to generate a song or text based on the prompt
-    # client = OpenAI(
-    #    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
-    # )
-
-    # chat_completion = client.chat.completions.create(
-    #    messages=[
-    #        {
-    #            "role": "user",
-    #            "content": "Say this is a test",
-    #        }
-    #    ],
-    #    model="gpt-4",
-    # )
-    # TODO custom prompt
-    response = ollama.generate(
-        model='gemma2:2b', prompt='genera una canzone natalizia in italiano'
+def pull_model():
+    response = requests.post(
+        url="http://ollama_service:11434/api/pull",
+        json={"model": "gemma2:2b"}
     )
-    if answer := response.get('response'):
-        return answer
-    raise 'Got no answer from model'
-    # return chat_completion.choices[0].message.content
+
+    if response.status_code == 200:
+        print("Model pulled successfully.")
+        return True
+    else:
+        print(f"Failed to pull model: {response.status_code} - {response.text}")
+        return False
+
+
+def generate_song_with_gemma(input_prompt: str) -> str:
+    url = "http://ollama_service:11434/api/generate"
+    prompt = f"Generate a christmas song based on the prompt: {input_prompt}"
+    payload = {"model": "gemma2:2b", "prompt": prompt}
+
+    response = requests.post(url, json=payload, stream=True)
+
+    if response.status_code == 200:
+        response_text = ""
+        for line in response.iter_lines():
+            if line:
+                try:
+                    chunk = json.loads(line.decode('utf-8'))
+                    response_text += chunk.get("response", "")
+                except json.JSONDecodeError as e:
+                    print(f"JSON decoding error: {e}")
+        return response_text
+    else:
+        raise Exception(f"Error: {response.status_code} - {response.text}")

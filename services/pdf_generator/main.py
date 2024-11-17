@@ -1,7 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from service import perform_task
 
-app = FastAPI()
+app = FastAPI(
+    root_path="/api"
+)
 
 
 @app.post("/generate-pdf/")
