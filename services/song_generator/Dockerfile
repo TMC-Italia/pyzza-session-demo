@@ -5,9 +5,7 @@ FROM python:3.9-slim
 # Set the working directory in the container
 
 # Copy the application code
-COPY main.py /song_generator/main.py
-COPY requirements.txt /song_generator/requirements.txt
-
+COPY . /song_generator
 WORKDIR /song_generator
 
 # Install dependencies

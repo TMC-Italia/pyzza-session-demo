@@ -4,10 +4,7 @@
 FROM python:3.10-slim-buster
 
 # Copy the application code
-COPY main.py /api/main.py
-COPY requirements.txt /api/requirements.txt
-
-# Set the working directory in the container
+COPY . /api
 WORKDIR /api
 
 # Install dependencies
