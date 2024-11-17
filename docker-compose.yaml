@@ -31,15 +31,32 @@ services:
     networks:
       - app
 
+#  song_generator_openai_service:
+#    build: ./services/song_generator
+#    container_name: song_generator_service
+#    environment:
+#      - OPENAI_API_KEY=${OPENAI_API_KEY}
+#    ports:
+#      - "8003:8003"
+#    volumes:
+#      - ./data:/data
+#    networks:
+#      - app
 
   song_generator_service:
     build: ./services/song_generator
     container_name: song_generator_service
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
     ports:
       - "8003:8003"
     volumes:
       - ./data:/data
+    networks:
+      - app
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - 11434:11434
     networks:
       - app
