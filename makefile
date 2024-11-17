@@ -12,8 +12,9 @@ compose-build:
 compose-up:
 	docker compose up -d --remove-orphans
 
-docker-ollama:
-	docker exec -it ollama ollama run gemma2:2b
+# Run the Ollama with Gemma2:2b in terminal
+run-in-terminal:
+	docker exec -it ollama_service ollama run gemma2:2b
 
 compose-down:
 	docker compose down --remove-orphans
