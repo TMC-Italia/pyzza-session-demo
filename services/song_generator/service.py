@@ -1,5 +1,6 @@
-import requests
 import json
+import requests
+
 
 
 def pull_model():
@@ -11,27 +12,18 @@ def pull_model():
     if response.status_code == 200:
         print("Model pulled successfully.")
         return True
-    else:
-        print(f"Failed to pull model: {response.status_code} - {response.text}")
-        return False
+    print(f"Failed to pull model: {response.status_code} - {response.text}")
+    return False
 
 
 def generate_song_with_gemma(input_prompt: str) -> str:
     url = "http://ollama_service:11434/api/generate"
     prompt = f"Generate a christmas song based on the prompt: {input_prompt}"
-    payload = {"model": "gemma2:2b", "prompt": prompt}
+    payload = {"model": "gemma2:2b", "prompt": prompt, 'stream': False}
 
-    response = requests.post(url, json=payload, stream=True)
-
-    if response.status_code == 200:
-        response_text = ""
-        for line in response.iter_lines():
-            if line:
-                try:
-                    chunk = json.loads(line.decode('utf-8'))
-                    response_text += chunk.get("response", "")
-                except json.JSONDecodeError as e:
-                    print(f"JSON decoding error: {e}")
-        return response_text
-    else:
-        raise Exception(f"Error: {response.status_code} - {response.text}")
+    response = requests.post(url, json=payload, stream=False)
+    try:
+        response_json = json.loads(response.content)
+        return response_json["response"]
+    except json.JSONDecodeError as e:
+        print(f"JSON decoding error: {e}")
