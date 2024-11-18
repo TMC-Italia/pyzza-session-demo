@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 import requests
 from pydantic import BaseModel
 from typing import Literal
+from fastapi.responses import StreamingResponse
 
 
 # FROM ENV THE ALLOW
@@ -14,6 +15,8 @@ API_PATH = f"http://localhost:{API_PORT}"
 # Base URLs for other services, accessed by Docker Compose service names
 HR_ASSISTANT_URL = "http://hr_assistant_service:8001/api"
 SONG_GENERATOR_URL = "http://song_generator_service:8002/api"
+
+Chart_Type = Literal["histogram", "bar_chart", "scatter_plot"]
 
 app = FastAPI(
     title="PyZza session API",
@@ -61,12 +64,30 @@ async def trick_or_treat():
     return choice(responses["treats"] + responses["tricks"])
 
 
-@app.get("/bc_data/matrix_charts/")
-async def matrix_charts():
+@app.get("/matrix_charts/{chart_type}/{skill}")
+async def matrix_charts(chart_type: Chart_Type, skill: str):
+    """
+    Proxy API endpoint to fetch and forward a file response from an external API.
+
+    Args:
+        chart_type (Chart_Type): The type of chart to generate.
+        skill (str): Comma-separated skill names for the chart.
+
+    Returns:
+        StreamingResponse: The response from the external API streamed to the client.
+    """
     try:
-        response = requests.get(HR_ASSISTANT_URL + "/matrix_charts")
+        # Make a request to the external service
+        url = f"{HR_ASSISTANT_URL}/matrix_charts/{chart_type}/{skill}"
+        response = requests.get(url, stream=True)
         response.raise_for_status()
-        return response.json()
+
+        # Return the response as a streaming file response
+        return StreamingResponse(
+            content=response.raw,  # Stream the raw content
+            media_type=response.headers.get("content-type", "application/octet-stream"),  # Fallback if content-type isn't provided
+            headers={"Content-Disposition": response.headers.get("Content-Disposition", f"attachment; filename={chart_type}_{skill.replace(',', '_')}.png")}
+        )
     except requests.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Error generating matrix charts: {e}")
 

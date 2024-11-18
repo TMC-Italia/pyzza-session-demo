@@ -10,7 +10,7 @@ API_BASE_URL = "http://api_service:8000/api"
 # Commands
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Send a welcome message."""
-    await update.message.reply_text("Welcome! Use /trickortreat, /generatepdf, or /generatesong  /askskill or /pullmodel. commands.")
+    await update.message.reply_text("Welcome! Use /trickortreat, /generatechart, or /generatesong  /askskill or /pullmodel. commands.")
 
 
 async def trick_or_treat(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -74,17 +74,6 @@ async def ask_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"Error: {e}")
 
 
-async def generate_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Call the generate_pdf API."""
-    try:
-        response = requests.post(f"{API_BASE_URL}/bc_data/generate_pdf/")
-        response.raise_for_status()
-        result = response.json()
-        await update.message.reply_text(f"PDF Generated: {result}")
-    except requests.RequestException as e:
-        await update.message.reply_text(f"Error: {e}")
-
-
 async def pull_model(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Call the pull_model API."""
     try:
@@ -107,7 +96,6 @@ def main():
     # Add Command Handlers
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("trickortreat", trick_or_treat))
-    app.add_handler(CommandHandler("generatepdf", generate_pdf))
     app.add_handler(CommandHandler("generatesong", generate_song))
     app.add_handler(CommandHandler("pullmodel", pull_model))
     app.add_handler(CommandHandler("askskill", ask_skill))
