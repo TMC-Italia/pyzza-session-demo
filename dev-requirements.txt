@@ -4,6 +4,12 @@ requests
 
 fpdf
 pandas
+gspread 
+google-auth
+
 openai
 ollama
+
 python-telegram-bot
+python-dotenv
+oauth2client

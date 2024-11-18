@@ -3,3 +3,7 @@ uvicorn
 
 fpdf
 pandas
+gspread 
+google-auth
+python-dotenv
+oauth2client

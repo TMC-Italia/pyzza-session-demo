@@ -27,3 +27,5 @@ compose-restart:
 
 compose-logs:
 	docker compose logs -f
+
+rebuild: compose-down compose-build compose-up compose-logs

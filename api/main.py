@@ -8,7 +8,7 @@ from typing import Literal
 
 
 # FROM ENV THE ALLOW
-API_PORT = os.getenv("API_PORT", 3000)
+API_PORT = os.getenv("API_PORT", 8000)
 API_PATH = f"http://localhost:{API_PORT}"
 
 # Base URLs for other services, accessed by Docker Compose service names
