@@ -23,12 +23,6 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
 
-    - name: Create Google Credentials JSON File
-      env:
-        GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-      run: |
-        echo "$GOOGLE_CREDENTIALS_JSON" > google-credentials.json
-
     - name: Build and push Docker images
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/api_service:latest ./api
