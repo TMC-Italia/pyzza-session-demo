@@ -69,3 +69,10 @@ jobs:
           # Restart services
           docker compose down --remove-orphans
           docker compose up -d --remove-orphans
+
+          docker exec -it pdf_generator_service sh
+          echo ${{ secrets.GOOGLE_KEY }} >> /app/client_secrets.JSON
+
+          exit
+
+          docker compose restart
