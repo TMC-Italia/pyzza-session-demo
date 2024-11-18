@@ -7,3 +7,6 @@ gspread
 google-auth
 python-dotenv
 oauth2client
+
+openai
+requests

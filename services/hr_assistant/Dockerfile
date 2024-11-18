@@ -3,8 +3,8 @@
 FROM python:3.9-slim
 
 # Copy the entire project to the container
-COPY . /pdf_generator
-WORKDIR /pdf_generator
+COPY . /hr_assistant
+WORKDIR /hr_assistant
 
 # Install dependencies
 RUN pip install -r requirements.txt

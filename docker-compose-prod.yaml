@@ -17,13 +17,16 @@ services:
     networks:
       - app
     depends_on:
-      - pdf_generator_service
+      - hr_assistant_service
 
-  pdf_generator_service:
-    image: kito129/pdf_generator_service:latest
-    container_name: pdf_generator_service
+  hr_assistant_service:
+    image: kito129/hr_assistant_service:latest
+    container_name: hr_assistant_service
     ports:
       - "8001:8001"
+    environment:
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
+      - MAX_TOKENS=${MAX_TOKENS}
     networks:
       - app
 
