@@ -6,6 +6,10 @@ from pydantic import BaseModel
 from typing import Literal
 import requests
 from openai import OpenAI
+import matplotlib.pyplot as plt
+import pandas as pd
+from fastapi.responses import FileResponse
+import seaborn as sns
 
 
 # Define the scope for the API
@@ -29,6 +33,9 @@ GEMMA_MODEL_NAME = "gemma2:2b"
 OPENAI_API_KEY = os.getenv("OPEN_AI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("OPEN_AI_API_KEY environment variable is not set.")
+
+CHART_TYPE = Literal["histogram", "bar_chart", "scatter_plot", "correlation_heatmap"]
+OUTPUT_DIR = "charts"
 
 
 class SkillRequest(BaseModel):
@@ -145,3 +152,152 @@ def _fetch_google_sheet_data():
     except Exception as e:
         print(f"Error details: {str(e)}")
         raise Exception(f"Error fetching data from Google Sheets: {e}")
+
+
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
+
+
+# API Endpoints
+@app.get("/matrix_charts/{chart_type}/")
+async def matrix_charts(chart_type: CHART_TYPE):
+    """
+    API endpoint to fetch data, generate a specified chart, and return it as a file response.
+    """
+    try:
+        # Fetch data from Google Sheets
+        matrix_data = _fetch_complete_google_sheet_data()
+
+        # Convert JSON data to Pandas DataFrame
+        df = pd.DataFrame(matrix_data)
+
+        # Create the specified chart
+        file = _create_charts(df, chart_type)
+
+        # Return the generated chart as a response
+        return FileResponse(file, media_type="image/png")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+def _fetch_complete_google_sheet_data():
+    """
+    Helper function to fetch data from Google Sheets and return it as JSON.
+    """
+    try:
+        # Authenticate using the service account
+        credentials = Credentials.from_service_account_file(
+            SERVICE_ACCOUNT_FILE, scopes=SCOPES
+        )
+        gc = gspread.authorize(credentials)
+
+        # Open the Google Sheet by its ID
+        spreadsheet = gc.open_by_url(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}")
+
+        # Select the worksheet "AllData"
+        worksheet = spreadsheet.worksheet("AllData")
+
+        # Fetch all data as a list of dictionaries
+        data = worksheet.get_all_records()
+
+        return data
+
+    except Exception as e:
+        print(f"Error details: {str(e)}")
+        raise Exception(f"Error fetching data from Google Sheets: {e}")
+
+
+def _create_charts(df: pd.DataFrame, chart_type: CHART_TYPE) -> str:
+    """
+    Helper function to create different types of charts based on the specified chart_type.
+    """
+    try:
+        if chart_type == "histogram":
+            return _create_histogram(df)
+        elif chart_type == "bar_chart":
+            return _create_bar_chart(df)
+        elif chart_type == "scatter_plot":
+            return _create_scatter_plot(df)
+        elif chart_type == "correlation_heatmap":
+            return _create_correlation_heatmap(df)
+        else:
+            raise ValueError(f"Invalid chart type: {chart_type}")
+    except Exception as e:
+        raise Exception(f"Error creating charts: {e}")
+
+
+def _create_histogram(df: pd.DataFrame) -> str:
+    """Helper function to create a histogram of Power BI ratings."""
+    plt.figure(figsize=(10, 6))
+
+    # Ensure the column is numeric, coerce invalid values to NaN
+    numeric_column = pd.to_numeric(df["Power BI"], errors="coerce")
+    
+    # Drop rows with NaN values
+    numeric_column = numeric_column.dropna()
+    
+    numeric_column.hist(bins=10, edgecolor='black')
+    plt.title("Histogram of Power BI Ratings")
+    plt.xlabel("Rating")
+    plt.ylabel("Frequency")
+    path = f"{OUTPUT_DIR}/power_bi_histogram.png"
+    plt.savefig(path)
+    plt.close()
+    return path
+
+
+def _create_bar_chart(df: pd.DataFrame) -> str:
+    """Helper function to create a bar chart of employee roles."""
+    plt.figure(figsize=(12, 8))
+
+    # Count valid roles
+    role_counts = df["Role"].dropna().value_counts()
+
+    role_counts.plot(kind="bar")
+    plt.title("Number of Employees by Role")
+    plt.xlabel("Role")
+    plt.ylabel("Count")
+    plt.xticks(rotation=45, ha='right')
+    path = f"{OUTPUT_DIR}/employee_roles_bar_chart.png"
+    plt.savefig(path)
+    plt.close()
+    return path
+
+
+def _create_scatter_plot(df: pd.DataFrame) -> str:
+    """Helper function to create a scatter plot of Power BI vs SQL ratings."""
+    plt.figure(figsize=(10, 6))
+
+    # Ensure both columns are numeric
+    x = pd.to_numeric(df["Power BI"], errors="coerce")
+    y = pd.to_numeric(df["SQL"], errors="coerce")
+
+    # Drop rows with NaN values in either column
+    valid_data = pd.DataFrame({"Power BI": x, "SQL": y}).dropna()
+
+    sns.scatterplot(x=valid_data["Power BI"], y=valid_data["SQL"], alpha=0.7)
+    plt.title("Scatter Plot: Power BI vs SQL Ratings")
+    plt.xlabel("Power BI Rating")
+    plt.ylabel("SQL Rating")
+    path = f"{OUTPUT_DIR}/power_bi_vs_sql_scatter.png"
+    plt.savefig(path)
+    plt.close()
+    return path
+
+
+def _create_correlation_heatmap(df: pd.DataFrame) -> str:
+    """Helper function to create a heatmap of correlations between numeric skills."""
+    # Select only numeric columns, coercing non-numeric values to NaN
+    numeric_columns = df.select_dtypes(include=["float64", "int64"]).apply(pd.to_numeric, errors="coerce")
+
+    # Compute correlation matrix, dropping NaN rows/columns
+    correlation_matrix = numeric_columns.corr()
+
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(correlation_matrix, cmap="coolwarm", annot=False)
+    plt.title("Correlation Heatmap of Skills")
+    path = f"{OUTPUT_DIR}/correlation_heatmap.png"
+    plt.savefig(path)
+    plt.close()
+    return path

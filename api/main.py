@@ -61,14 +61,14 @@ async def trick_or_treat():
     return choice(responses["treats"] + responses["tricks"])
 
 
-@app.get("/bc_data/generate_pdf/")
-async def generate_pdf():
+@app.get("/bc_data/matrix_charts/")
+async def matrix_charts():
     try:
-        response = requests.get(HR_ASSISTANT_URL + "/generate_pdf")
+        response = requests.get(HR_ASSISTANT_URL + "/matrix_charts")
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"Error generating PDF: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating matrix charts: {e}")
 
 
 @app.post("/bc_data/ask_question/")
