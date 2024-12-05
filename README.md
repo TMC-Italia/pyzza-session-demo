@@ -2,7 +2,7 @@
 # Pyzza Session Demo 🍕  
 **Python Demo - Pizza Session (18 Nov)**  
 
-This repository demonstrates a Python-based application designed for a pizza-themed session, showcasing various services built with Docker, Python, and Makefiles.  
+This repository demonstrates a Python-based application designed for the Pizza session, showcasing various services built with Docker, Python, and Makefiles.  
 
 ## Project Overview  
 
